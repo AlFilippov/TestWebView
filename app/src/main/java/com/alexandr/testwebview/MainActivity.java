@@ -2,11 +2,13 @@ package com.alexandr.testwebview;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -32,10 +35,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     private static final int INPUT_FILE_REQUEST_CODE = 1;
-    private static final int FILECHOOSER_RESULTCODE = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -44,10 +47,26 @@ public class MainActivity extends AppCompatActivity{
     };
     private WebView webView;
     private WebSettings webSettings;
-    private ValueCallback<Uri> mUploadMessage;
-    private Uri mCapturedImageURI = null;
     private ValueCallback<Uri[]> mFilePathCallback;
     private String mCameraPhotoPath;
+    public WebBackForwardList webBackForwardList;
+    private String CHANELL_ID;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        webView = findViewById(R.id.webview);
+        setWebViewSettings(webView);
+        verifyStoragePermissions(MainActivity.this);
+        webView.setWebViewClient(new Client());
+        webView.setWebChromeClient(new ChromeClient());
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        webView.loadUrl("https://kjhfg.net/"); //change with your website
+        NotifyWorker.scheduleReminder(this);
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -72,59 +91,14 @@ public class MainActivity extends AppCompatActivity{
             }
             mFilePathCallback.onReceiveValue(results);
             mFilePathCallback = null;
-        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            if (requestCode != FILECHOOSER_RESULTCODE || mUploadMessage == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-            if (requestCode == FILECHOOSER_RESULTCODE) {
-                if (null == this.mUploadMessage) {
-                    return;
-                }
-                Uri result = null;
-                try {
-                    if (resultCode != RESULT_OK) {
-                        result = null;
-                    } else {
-                        // retrieve from the private variable if the intent is null
-                        result = data == null ? mCapturedImageURI : data.getData();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "activity :" + e,
-                            Toast.LENGTH_LONG).show();
-                }
-                mUploadMessage.onReceiveValue(result);
-                mUploadMessage = null;
-            }
         }
-        return;
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        webView = findViewById(R.id.webview);
-        webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setAllowFileAccess(true);
-        webSettings.setDomStorageEnabled(true);
-        webView.setWebViewClient(new Client());
-        webView.setWebChromeClient(new ChromeClient());
-        if (Build.VERSION.SDK_INT >= 19) {
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        }
-        else if(Build.VERSION.SDK_INT >=11 && Build.VERSION.SDK_INT < 19) {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
-        webView.loadUrl("https://kjhfg.net/"); //change with your website
 
-    }
     public class ChromeClient extends WebChromeClient {
 
         // For Android 5.0
         public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> filePath, WebChromeClient.FileChooserParams fileChooserParams) {
-           
+
             // Double check that we don't have any existing callbacks
             if (mFilePathCallback != null) {
                 mFilePathCallback.onReceiveValue(null);
@@ -165,7 +139,9 @@ public class MainActivity extends AppCompatActivity{
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
             startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE);
             return true;
+
         }
+
         private File createImageFile() throws IOException {
             // Create an image file name
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -177,25 +153,14 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // Check if the key event was the Back button and if there's history
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack();
-            return true;
+
+    @Override
+    public void onBackPressed() {
+        webBackForwardList = webView.copyBackForwardList();
+        if (webView.canGoBack() && webView.canGoBackOrForward(-1)) {
+            webView.goBackOrForward(1 - webBackForwardList.getSize());
         }
-        // If it wasn't the Back key or there's no web page history, bubble up to the default
-        // system behavior (probably exit the activity)
-        return super.onKeyDown(keyCode, event);
     }
-
-
-    /**
-     * Checks if the app has permission to write to device storage
-     *
-     * If the app does not has permission then the user will be prompted to grant permissions
-     *
-     * @param activity
-     */
 
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
@@ -209,6 +174,14 @@ public class MainActivity extends AppCompatActivity{
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+    }
+
+    private void setWebViewSettings(WebView webView) {
+        webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setDomStorageEnabled(true);
     }
 
 }
