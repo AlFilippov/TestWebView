@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private ValueCallback<Uri[]> mFilePathCallback;
     private String mCameraPhotoPath;
     public WebBackForwardList webBackForwardList;
-    private String CHANELL_ID;
+    public Locale mLocale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new ChromeClient());
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.loadUrl("https://kjhfg.net/"); //change with your website
-        NotifyWorker.scheduleReminder(this);
+//Уведомления по языку
+        setNotificationRuLanguage(mLocale);
 
     }
 
@@ -91,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
             }
             mFilePathCallback.onReceiveValue(results);
             mFilePathCallback = null;
+        }
+    }
+
+    public void setNotificationRuLanguage(Locale locale) {
+        if (locale.getLanguage().equals("ru")) {
+            NotificationHelper.scheduleRepeatingElapsedNotification(this);
         }
     }
 
