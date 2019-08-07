@@ -1,44 +1,36 @@
-package com.alexandr.testwebview;
+package com.alexandr.testwebview.webview;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
+
+import com.alexandr.testwebview.R;
+import com.alexandr.testwebview.Utils;
+import com.alexandr.testwebview.notifytools.NotificationHelper;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
     private static final int INPUT_FILE_REQUEST_CODE = 1;
@@ -49,13 +41,11 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private WebView webView;
-    private WebSettings webSettings;
     private ValueCallback<Uri[]> mFilePathCallback;
     private String mCameraPhotoPath;
     public WebBackForwardList webBackForwardList;
     public Locale mLocale;
     public SharedPreferences mPreferences;
-    private int loadActivity = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new ChromeClient());
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.loadUrl("https://kjhfg.net/");
-
-        //Счетчик сколько раз открывалась активность
         countOpenActivity(mPreferences);
 
     }
@@ -80,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         boolean hasVisited = preferences.getBoolean("hasVisited", false);
         if (!hasVisited) {
             setNotificationRuLanguage(mLocale);
+            int loadActivity = 1;
             editor.putInt(Utils.OPEN_ACTIVITY, loadActivity);
             editor.putBoolean("hasVisited", true);
             editor.apply();
@@ -215,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setWebViewSettings(WebView webView) {
-        webSettings = webView.getSettings();
+        WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setAllowFileAccess(true);

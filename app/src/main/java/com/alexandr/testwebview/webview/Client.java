@@ -1,4 +1,4 @@
-package com.alexandr.testwebview;
+package com.alexandr.testwebview.webview;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;

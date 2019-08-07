@@ -1,4 +1,4 @@
-package com.alexandr.testwebview;
+package com.alexandr.testwebview.workmanager;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,12 +11,15 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.alexandr.testwebview.webview.MainActivity;
+import com.alexandr.testwebview.R;
+
 import java.util.Objects;
 
-public class NotifyWorker extends Worker {
+public class NotifyWorkerFirstLoad extends Worker {
 
 
-    public NotifyWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public NotifyWorkerFirstLoad(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
@@ -26,7 +29,7 @@ public class NotifyWorker extends Worker {
         sendNotification();
         return Result.success();
     }
-
+//Поставить условия на мин сдк и канал
     private void sendNotification() {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
