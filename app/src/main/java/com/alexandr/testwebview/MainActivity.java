@@ -10,7 +10,9 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private String mCameraPhotoPath;
     public WebBackForwardList webBackForwardList;
     public Locale mLocale;
+    public SharedPreferences mPreferences;
+    private int loadActivity = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +67,30 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new Client());
         webView.setWebChromeClient(new ChromeClient());
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        webView.loadUrl("https://kjhfg.net/"); //change with your website
-//Уведомления по языку
-        setNotificationRuLanguage(mLocale);
+        webView.loadUrl("https://kjhfg.net/");
 
+        //Счетчик сколько раз открывалась активность
+        countOpenActivity(mPreferences);
+
+    }
+
+    public void countOpenActivity(SharedPreferences preferences) {
+        preferences = getApplicationContext().getSharedPreferences(Utils.OPEN_ACTIVITY, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        boolean hasVisited = preferences.getBoolean("hasVisited", false);
+        if (!hasVisited) {
+            setNotificationRuLanguage(mLocale);
+            editor.putInt(Utils.OPEN_ACTIVITY, loadActivity);
+            editor.putBoolean("hasVisited", true);
+            editor.apply();
+        } else {
+            int count = preferences.getInt("key", 0);
+            count++;
+            editor.putInt("key", count);
+            editor.apply();
+            //TODO:Убрать после релиза
+            setNotificationRuLanguage(mLocale);
+        }
     }
 
     @Override
@@ -97,9 +121,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setNotificationRuLanguage(Locale locale) {
-        if (locale.getLanguage().equals("ru")) {
-            NotificationHelper.scheduleRepeatingElapsedNotification(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = Resources.getSystem().getConfiguration().getLocales().get(0);
+        } else {
+            locale = Resources.getSystem().getConfiguration().locale;
         }
+        String language = locale.getLanguage();
+        if (language.equals("ru"))
+            NotificationHelper.scheduleSetElapsedNotificationFourHours(this);
+
     }
 
     public class ChromeClient extends WebChromeClient {
