@@ -5,10 +5,14 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.loadUrl("https://kjhfg.net/");
         countOpenActivity(mPreferences);
-
+        createNotifyChannel();
     }
 
     public void countOpenActivity(SharedPreferences preferences) {
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         String language = locale.getLanguage();
         if (language.equals("ru"))
             NotificationHelper.scheduleSetElapsedNotificationFourHours(this);
+        NotificationHelper.scheduleSetElapsedNotificationTwoDays(this);
 
     }
 
@@ -211,4 +216,17 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setDomStorageEnabled(true);
     }
 
+    private void createNotifyChannel() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(Utils.CHANNEL_ID, "My channel",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("My channel description");
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(false);
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 }

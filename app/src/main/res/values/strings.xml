@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">TestWebView</string>
+    <string name="channel_name">channel</string>
+    <string name="channel_description">my description</string>
+    <string name="fourhours_title">💸 Получи +2️⃣ 0️⃣0️⃣0️⃣руб в подарок!</string>
+    <string name="fourhours_text">Пополни на 1000 р. и получи 200% бонуса</string>
+    <string name="always_twodays_title">⚡Сделай ставку 🎰</string>
+    <string name="always_twodays_text">И испытай настоящий азарт 🎲</string>
+    <string name="one_after_title">⚡ ПРИВЕТСТВЕННЫЙ БОНУС 👋</string>
+    <string name="one_after_text">🎁 Получи + 💯 % на свой счёт при пополнении</string>
+    <string name="two_after_title">⚡Новая система бонусов ‼️</string>
+    <string name="two_after_text">Проверь информацию в личном кабинете</string>
+    <string name="three_after_title">⭐️ Сегодня рекордный джек-пот </string>
+    <string name="three_after_text">💰 Стоит попробовать</string>
+    <string name="seven_after_title">💷 ПОСМОТРИ какой сегодня </string>
+    <string name="seven_after_text">джек-пот  😱 😱 😱</string>
+    <string name="eight_after_title">😍  Забери свой </string>
+    <string name="eight_after_text">выигрыш 🏆</string>
+    <string name="ten_after_title">🌟 Бонус для проверенных </string>
+    <string name="ten_after_text">игроков 💸💸💸</string>
+    <string name="thirteen_after_title">🚀 Выигрыши растут ❗</string>
+    <string name="thirteen_after_text">Спеши!</string>
+    <string name="seventeen_after_title">⭐️ 🌟 ⭐️ звездопад выигрышей</string>
+    <string name="seventeen_after_text">успей поймать свой шанс 💸💸💸</string>
+    <string name="twenty_after_title">💎 Поспеши </string>
+    <string name="twenty_after_text">Стать VIP игроком 💷</string>
+    <string name="twentyseven_after_title">🔔🔔🔔 Последний шанс сорвать куш </string>
+    <string name="twentyseven_after_text">💰 спеши </string>
+    <string name="thirty_after_title">🔔 Джекпот стал ещё больше 💰</string>
+    <string name="thirty_after_text">Сорви куш 🏆 !</string>
+
+
+
 </resources>
