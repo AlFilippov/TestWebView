@@ -29,6 +29,7 @@ import android.webkit.WebView;
 import com.alexandr.testwebview.R;
 import com.alexandr.testwebview.Utils;
 import com.alexandr.testwebview.notifytools.NotificationHelper;
+import com.appsflyer.AppsFlyerLib;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         webView = findViewById(R.id.webview);
-        setWebViewSettings(webView);
+        setWebViewSettings(webView,getIdAppsFlyer());
         verifyStoragePermissions(MainActivity.this);
-        webView.setWebViewClient(new Client());
-        webView.setWebChromeClient(new ChromeClient());
-        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        webView.loadUrl("https://kjhfg.net/");
         countOpenActivity(mPreferences);
         createNotifyChannel();
+    }
+
+    public String getIdAppsFlyer() {
+        return AppsFlyerLib.getInstance().getAppsFlyerUID(this);
     }
 
     public void countOpenActivity(SharedPreferences preferences) {
@@ -208,7 +209,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setWebViewSettings(WebView webView) {
+    private void setWebViewSettings(WebView webView,String id) {
+        webView.setWebViewClient(new Client());
+        webView.setWebChromeClient(new ChromeClient());
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        webView.loadUrl("https://kjhfg.net/");
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadWithOverviewMode(true);

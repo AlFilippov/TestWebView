@@ -3,7 +3,6 @@ package com.alexandr.testwebview.notifytools;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.graphics.Color;
 
 import androidx.core.app.NotificationCompat;
 
@@ -24,7 +23,7 @@ public class NotificationCreator {
                 .setContentTitle(context.getString(title))
                 .setContentText(context.getString(text))
                 .setContentIntent(intent)
-                .setLights(Color.BLUE, 500, 500)
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS |Notification.DEFAULT_VIBRATE)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(2)
