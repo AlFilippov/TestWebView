@@ -1,8 +1,5 @@
 package com.alexandr.testwebview.webview;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
@@ -26,6 +23,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.alexandr.testwebview.R;
 import com.alexandr.testwebview.Utils;
 import com.alexandr.testwebview.notifytools.NotificationHelper;
@@ -37,9 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class WebActivity extends AppCompatActivity {
     private static final int INPUT_FILE_REQUEST_CODE = 1;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = WebActivity.class.getSimpleName();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         webView = findViewById(R.id.webview);
-        setWebViewSettings(webView,getIdAppsFlyer());
-        verifyStoragePermissions(MainActivity.this);
+        setWebViewSettings(webView, getIdAppsFlyer());
         countOpenActivity(mPreferences);
         createNotifyChannel();
     }
@@ -82,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
             count++;
             editor.putInt("key", count);
             editor.apply();
-            //TODO:Убрать после релиза
-            setNotificationRuLanguage(mLocale);
+
         }
     }
 
@@ -124,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
         if (language.equals("ru"))
             NotificationHelper.scheduleSetElapsedNotificationFourHours(this);
         NotificationHelper.scheduleSetElapsedNotificationTwoDays(this);
-
+        NotificationHelper.scheduleSetRepeatingNotification(this);
     }
 
     public class ChromeClient extends WebChromeClient {
 
         // For Android 5.0
         public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> filePath, WebChromeClient.FileChooserParams fileChooserParams) {
-
+            verifyStoragePermissions(WebActivity.this);
             // Double check that we don't have any existing callbacks
             if (mFilePathCallback != null) {
                 mFilePathCallback.onReceiveValue(null);
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void verifyStoragePermissions(Activity activity) {
+    public static boolean verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -206,10 +204,12 @@ public class MainActivity extends AppCompatActivity {
                     PERMISSIONS_STORAGE,
                     REQUEST_EXTERNAL_STORAGE
             );
+
         }
+        return true;
     }
 
-    private void setWebViewSettings(WebView webView,String id) {
+    private void setWebViewSettings(WebView webView, String id) {
         webView.setWebViewClient(new Client());
         webView.setWebChromeClient(new ChromeClient());
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);

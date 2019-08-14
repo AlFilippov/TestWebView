@@ -1,4 +1,4 @@
-package com.alexandr.testwebview.workmanager.NotifyWorker;
+package com.alexandr.testwebview.workmanager.NotifyWorker.NotifyAfterSomeDays;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,12 +15,13 @@ import com.alexandr.testwebview.webview.WebActivity;
 
 import java.util.Objects;
 
-public class NotifyWorkerFirstLoadTwoDays extends Worker {
+public class NotifyWorkerAfterThirtyDay extends Worker {
     private NotificationCreator mCreator;
 
-    public NotifyWorkerFirstLoadTwoDays(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public NotifyWorkerAfterThirtyDay(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
+
 
     @NonNull
     @Override
@@ -32,7 +33,7 @@ public class NotifyWorkerFirstLoadTwoDays extends Worker {
     private PendingIntent createIntent() {
         Intent notificationIntent = new Intent(getApplicationContext(), WebActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(getApplicationContext(), 0,
                 notificationIntent, 0);
     }
@@ -40,7 +41,9 @@ public class NotifyWorkerFirstLoadTwoDays extends Worker {
     private void sendNotification() {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         mCreator = new NotificationCreator(getApplicationContext());
-        Objects.requireNonNull(notificationManager).notify(2, mCreator.notifyCreate(createIntent(), getApplicationContext(), R.string.always_twodays_title, R.string.always_twodays_text));
+        Objects.requireNonNull(notificationManager).notify(1, mCreator.notifyCreate(createIntent(),
+                getApplicationContext(), R.string.thirty_after_title, R.string.thirty_after_text));
+
     }
 
 

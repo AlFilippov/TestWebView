@@ -24,7 +24,7 @@ public class NotificationHelper {
         PendingIntent alarmIntentElapsed = PendingIntent.getBroadcast(context, ALARM_TYPE_ELAPSED, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManagerElapsed = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         Objects.requireNonNull(alarmManagerElapsed)
-                .set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 60 * 1000, alarmIntentElapsed);
+                .set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 4*60*60 * 1000, alarmIntentElapsed);
     }
 
     public static void scheduleSetElapsedNotificationTwoDays(Context context) {
@@ -33,11 +33,11 @@ public class NotificationHelper {
         PendingIntent alarmIntentElapsed = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         assert alarmManager != null;
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +  2* 60 * 1000, alarmIntentElapsed);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +  2*24*60* 60 * 1000, alarmIntentElapsed);
     }
 
     // Set the alarm to start at 10:30 a.m.
-    static void scheduleSetRepeatingNotification(Context context) {
+   public static void scheduleSetRepeatingNotification(Context context) {
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiverRepeatNotification.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);

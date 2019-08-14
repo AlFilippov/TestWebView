@@ -11,7 +11,7 @@ import androidx.work.WorkerParameters;
 
 import com.alexandr.testwebview.R;
 import com.alexandr.testwebview.notifytools.NotificationCreator;
-import com.alexandr.testwebview.webview.MainActivity;
+import com.alexandr.testwebview.webview.WebActivity;
 
 import java.util.Objects;
 
@@ -30,7 +30,7 @@ public class NotifyWorkerFirstLoadFourHours extends Worker {
     }
 
     private PendingIntent createIntent() {
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), WebActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(getApplicationContext(), 0,
