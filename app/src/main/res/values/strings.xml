@@ -28,7 +28,8 @@
     <string name="twentyseven_after_text">💰 спеши </string>
     <string name="thirty_after_title">🔔 Джекпот стал ещё больше 💰</string>
     <string name="thirty_after_text">Сорви куш 🏆 !</string>
-
+    <string name="know">GO!</string>
+    <string name="text">Today you -</string>
 
 
 </resources>

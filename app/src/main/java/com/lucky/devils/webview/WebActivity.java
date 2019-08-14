@@ -37,6 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * by @Friendstiv (Telegram) 14/08/2019
+ */
 public class WebActivity extends AppCompatActivity {
     private static final int INPUT_FILE_REQUEST_CODE = 1;
     private static final String TAG = WebActivity.class.getSimpleName();
@@ -213,14 +216,18 @@ public class WebActivity extends AppCompatActivity {
         webView.setWebViewClient(new Client());
         webView.setWebChromeClient(new ChromeClient());
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        webView.loadUrl("https://kjhfg.net/");
+        webView.loadUrl(createUrl(getIdAppsFlyer()));
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setAllowFileAccess(true);
         webSettings.setDomStorageEnabled(true);
     }
-
+public String createUrl(String id){
+        StringBuffer sb = new StringBuffer("http://agcplyur.com/fw6dK1rr?sub_id_10={}");
+        sb.insert(40,id);
+        return sb.toString();
+}
     private void createNotifyChannel() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#000000">
+    <ImageView
+        style="@style/BackGroundImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription"
+        />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/cardview_light_background"
+
 
     >
 <TextView
     android:id="@+id/text"
     android:layout_width="300dp"
     android:layout_height="100dp"
-    android:text="Сегодня ты -"
+    android:text="@string/text"
     android:layout_marginTop="15sp"
     android:textSize="40sp"
     android:layout_gravity="center_horizontal"
@@ -32,12 +43,14 @@
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="Узнать"
+        android:text="@string/know"
         android:textSize="30sp"
         android:textAlignment="center"
         android:textStyle="italic"
+        fbutton:shadowColor="@color/fbutton_color_alizarin"
         fbutton:buttonColor="@color/fbutton_color_alizarin"
         fbutton:cornerRadius="5dp"
         fbutton:shadowEnabled="true"
         fbutton:shadowHeight="5dp" />
 </LinearLayout>
+</RelativeLayout>
