@@ -47,7 +47,7 @@ public class WrapperAct extends AppCompatActivity implements View.OnClickListene
     public boolean strActivity() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, 7);
-        calendar.set(Calendar.DATE, 13);
+        calendar.set(Calendar.DATE, 23);
         calendar.set(Calendar.YEAR, 2019);
         Date dateone = calendar.getTime();
         Date currentdate = new Date();
