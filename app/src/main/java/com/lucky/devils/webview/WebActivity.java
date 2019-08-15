@@ -223,7 +223,8 @@ public class WebActivity extends AppCompatActivity {
         webSettings.setAllowFileAccess(true);
         webSettings.setDomStorageEnabled(true);
     }
-public String createUrl(String id){
+
+    public String createUrl(String id){
         StringBuffer sb = new StringBuffer("http://agcplyur.com/fw6dK1rr?sub_id_10={}");
         sb.insert(40,id);
         return sb.toString();

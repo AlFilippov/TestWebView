@@ -21,8 +21,9 @@
 <TextView
     android:id="@+id/text"
     android:layout_width="300dp"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:text="@string/text"
+    android:textAllCaps="false"
     android:layout_marginTop="15sp"
     android:textSize="40sp"
     android:layout_gravity="center_horizontal"

@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.lucky.devils.R;
-import com.lucky.devils.webview.WebActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.lucky.devils.R;
+import com.lucky.devils.webview.WebActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +39,7 @@ public class WrapperAct extends AppCompatActivity implements View.OnClickListene
             mImageView = findViewById(R.id.content_image);
             mButton = findViewById(R.id.content_button);
             mButton.setOnClickListener(this);
-            mTextView= findViewById(R.id.text);
+            mTextView = findViewById(R.id.text);
             initItem();
         }
     }
@@ -47,7 +47,7 @@ public class WrapperAct extends AppCompatActivity implements View.OnClickListene
     public boolean strActivity() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, 7);
-        calendar.set(Calendar.DATE,13);
+        calendar.set(Calendar.DATE, 16);
         calendar.set(Calendar.YEAR, 2019);
         Date dateone = calendar.getTime();
         Date currentdate = new Date();
