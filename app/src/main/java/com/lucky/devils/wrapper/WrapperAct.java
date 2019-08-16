@@ -1,7 +1,12 @@
 package com.lucky.devils.wrapper;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +20,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lucky.devils.R;
 import com.lucky.devils.webview.WebActivity;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,7 +34,7 @@ public class WrapperAct extends AppCompatActivity implements View.OnClickListene
     private TextView mTextView;
     private Glide mGlide;
     private List<RandomWrapperItem> mRandomWrapperItems = new ArrayList<>();
-
+    public final String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +66,7 @@ public class WrapperAct extends AppCompatActivity implements View.OnClickListene
         Glide.with(this).applyDefaultRequestOptions(new RequestOptions().fitCenter())
                 .load(mRandomWrapperItems.get(RandomId()).getIcon())
                 .into(mImageView);
-    }
+}
 
     private int RandomId() {
         Random random = new Random();
