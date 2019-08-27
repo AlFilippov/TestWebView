@@ -26,10 +26,10 @@ import android.webkit.WebView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.appsflyer.AppsFlyerLib;
 import com.lucky.devils.R;
 import com.lucky.devils.Utils;
 import com.lucky.devils.notifytools.NotificationHelper;
-import com.appsflyer.AppsFlyerLib;
 
 import java.io.File;
 import java.io.IOException;
@@ -196,7 +196,7 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    public static boolean verifyStoragePermissions(Activity activity) {
+    public static boolean verifyStoragePermissions(AppCompatActivity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -216,6 +216,7 @@ public class WebActivity extends AppCompatActivity {
         webView.setWebViewClient(new Client());
         webView.setWebChromeClient(new ChromeClient());
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
         webView.loadUrl(createUrl(getIdAppsFlyer()));
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);

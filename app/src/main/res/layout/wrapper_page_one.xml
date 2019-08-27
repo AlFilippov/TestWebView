@@ -29,7 +29,7 @@
     android:layout_gravity="center_horizontal"
     android:textAlignment="center"
     android:textStyle="italic"
-    android:textColor="@color/fbutton_color_alizarin"/>
+    android:textColor="@color/fbutton_color_peter_river"/>
 
     <ImageView
         android:id="@+id/content_image"
@@ -49,7 +49,7 @@
         android:textAlignment="center"
         android:textStyle="italic"
         fbutton:shadowColor="@color/fbutton_color_alizarin"
-        fbutton:buttonColor="@color/fbutton_color_alizarin"
+        fbutton:buttonColor="@color/fbutton_color_peter_river"
         fbutton:cornerRadius="5dp"
         fbutton:shadowEnabled="true"
         fbutton:shadowHeight="5dp" />
